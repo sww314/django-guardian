@@ -410,6 +410,16 @@ def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=Fals
 
     global_perms = set()
     has_global_perms = False
+
+    # deal with no app_label
+    if app_label is None:
+      try:
+        app_label = ctype.app_label
+      except:
+        import logging
+        logging.getLogger(__name__).exception()
+        app_label = 'None'
+
     # a superuser has by default assigned global perms for any
     if accept_global_perms and with_superuser:
         for code in codenames:
